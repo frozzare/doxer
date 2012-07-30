@@ -1,0 +1,30 @@
+{
+  "name": "doxer",
+  "version": "0.1.0",
+  "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
+  "description": "Doxer is port of Docco for Dox documentation",
+  "contributors": [],
+  "bin": {
+    "marku": "./bin/doxer"
+  },
+  "main": "./lib/doxer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frozzare/doxer.git"
+  },
+  "keywords": [
+    "dox",
+    "docco",
+    "documentation"
+  ],
+  "dependencies" : {
+    "ejs": "*",
+    "dox": "*",
+    "highlight": "0.2.2",
+    "commander": "1.0.0"
+  },
+  "license": "MIT",
+  "engine": {
+    "node": ">= 0.4.x"
+  }
+}
