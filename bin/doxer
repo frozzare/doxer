@@ -4,13 +4,16 @@ var program = require('commander')
   , doxer = require('../lib/doxer');
 
 program
-  .version('0.0.1')
+  .version(doxer.version)
+  .usage('[options] <file ...>')
   .option('-t, --title [title]', 'Doxer title, default is the file name')
   .parse(process.argv);
 
-var options = {
-      title: program.title,
-      files: program.args
-    };
-    
-doxer.process(options);
+if (program.title && program.args.length > 0) {
+  doxer.process({
+    title: program.title,
+    files: program.args
+  });  
+} else {
+  console.log(program.helpInformation());
+}
