@@ -1,7 +1,7 @@
 # Doxer
 
-Doxer is a port of, and borrows a bit from, Docco but for [Dox documentation](https://github.com/visionmedia/dox).
-Doxer is not perfect and will contains bugs, use at your own risk.
+Doxer is a port of, and borrows a bit from, [Docco](https://github.com/jashkenas/docco) but for [Dox documentation](https://github.com/visionmedia/dox).
+Doxer is not perfect and maybe contains bugs, use at your own risk.
 
 ```sh
 npm install -g doxer
