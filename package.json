@@ -5,7 +5,7 @@
   "description": "Doxer is port of Docco for Dox documentation",
   "contributors": [],
   "bin": {
-    "marku": "./bin/doxer"
+    "doxer": "./bin/doxer"
   },
   "main": "./lib/doxer",
   "repository": {
@@ -19,7 +19,7 @@
   ],
   "dependencies" : {
     "ejs": "*",
-    "dox": "*",
+    "dox": "git://github.com/visionmedia/dox.git",
     "highlight": "0.2.2",
     "commander": "1.0.0"
   },
