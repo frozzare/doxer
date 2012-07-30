@@ -34,7 +34,8 @@ Will save `doxer.html` and `doxer.css` in `docs` directory after generating the 
 ```javascript
 var doxer = require('doxer');
 
-doxer.process({ files: [], title: 'Title' });
+doxer.process({ files: [], title: 'Title' }, function (res) {
+  // res.html is the html document
+  // res.style is Doxer stylesheet
+});
 ```
-
-It will return an object with `html` and `style` properties. Where `html` is the html document and `style` is Doxer stylesheet.
