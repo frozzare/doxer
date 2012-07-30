@@ -1,9 +1,9 @@
 # Doxer
 
 Doxer is a port of, and borrows a bit from, [Docco](https://github.com/jashkenas/docco) but for [Dox documentation](https://github.com/visionmedia/dox).
-Doxer is not perfect and maybe contains bugs, use at your own risk.
+Doxer is not perfect and maybe contains bugs.
 
-[Example page](http://frozzare.github.com/Doxer/)
+[Example page](http://frozzare.github.com/doxer/)
 
 ```sh
 npm install -g doxer
