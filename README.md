@@ -3,6 +3,8 @@
 Doxer is a port of, and borrows a bit from, [Docco](https://github.com/jashkenas/docco) but for [Dox documentation](https://github.com/visionmedia/dox).
 Doxer is not perfect and maybe contains bugs, use at your own risk.
 
+[Example page](http://frozzare.github.com/Doxer/)
+
 ```sh
 npm install -g doxer
 doxer --title "project name" source.js
