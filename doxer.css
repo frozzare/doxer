@@ -1,0 +1,224 @@
+/* Based on Docco's stylesheet https://github.com/jashkenas/docco/blob/master/resources/docco.css */
+
+body {
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+  font-size: 15px;
+  line-height: 22px;
+  color: #252519;
+  margin: 0; padding: 0;
+}
+
+a {
+  color: #261a3b;
+}
+
+a:visited {
+  color: #261a3b;
+}
+
+p {
+  margin: 0 0 15px 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0px 0 15px 0;
+}
+
+h1 {
+  margin-top: 40px;
+}
+
+#container {
+  position: relative;
+}
+
+table td {
+  border: 0;
+  outline: 0;
+}
+td.docs, th.docs {
+  max-width: 450px;
+  min-width: 450px;
+  min-height: 5px;
+  padding: 10px 25px 1px 50px;
+  overflow-x: hidden;
+  vertical-align: top;
+  text-align: left;
+}
+.docs pre, .docs pre code {
+  background: none;
+}
+.docs p tt, .docs p code {
+  background: #f8f8ff;
+  border: 1px solid #dedede;
+  font-size: 12px;
+  padding: 0 0.2em;
+}
+
+.pilwrap {
+ position: relative;
+}
+
+.pilcrow {
+ font: 12px Arial;
+ text-decoration: none;
+ color: #454545;
+ position: absolute;
+ top: 3px; left: -20px;
+ padding: 1px 2px;
+ opacity: 0;
+ -webkit-transition: opacity 0.2s linear;
+ -moz-transition: opacity 0.2s linear;
+ -o-transition: opacity 0.2s linear;
+ -ms-transition: opacity 0.2s linear;
+ transition: opacity 0.2s linear; 
+}
+
+td.docs:hover .pilcrow {
+  opacity: 1;
+}
+
+td.code, th.code {
+  padding: 14px 15px 16px 25px;
+  width: 100%;
+  vertical-align: top;
+  background: #F8F8F8;
+  border-left: 1px solid #DFDFDF;
+}
+
+pre, tt, code, .docs pre code {
+  font-size: 12px; 
+  line-height: 18px;
+  font-family: Monaco, Consolas, "Lucida Console", monospace;
+  margin: 0; 
+  padding: 0;
+}
+/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+pre code {
+  display: block; padding: 0.5em;
+  color: #000;
+  background: #f8f8ff
+}
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .javadoc {
+  color: #998;
+  font-style: italic
+}
+
+pre .keyword,
+pre .css .rule .keyword,
+pre .winutils,
+pre .javascript .title,
+pre .lisp .title,
+pre .subst {
+  color: #000;
+  font-weight: bold
+}
+
+pre .number,
+pre .hexcolor {
+  color: #40a070
+}
+
+pre .string,
+pre .tag .value,
+pre .phpdoc,
+pre .tex .formula {
+  color: #d14
+}
+
+pre .title,
+pre .id {
+  color: #900;
+  font-weight: bold
+}
+
+pre .javascript .title,
+pre .lisp .title,
+pre .subst {
+  font-weight: normal
+}
+
+pre .class .title,
+pre .haskell .label,
+pre .tex .command {
+  color: #458;
+  font-weight: bold
+}
+
+pre .tag,
+pre .tag .title,
+pre .rules .property,
+pre .django .tag .keyword {
+  color: #000080;
+  font-weight: normal
+}
+
+pre .attribute,
+pre .variable,
+pre .instancevar,
+pre .lisp .body {
+  color: #008080
+}
+
+pre .regexp {
+  color: #009926
+}
+
+pre .class {
+  color: #458;
+  font-weight: bold
+}
+
+pre .symbol,
+pre .ruby .symbol .string,
+pre .ruby .symbol .keyword,
+pre .ruby .symbol .keymethods,
+pre .lisp .keyword,
+pre .tex .special,
+pre .input_number {
+  color: #990073
+}
+
+pre .builtin,
+pre .built_in,
+pre .lisp .title {
+  color: #0086b3
+}
+
+pre .preprocessor,
+pre .pi,
+pre .doctype,
+pre .shebang,
+pre .cdata {
+  color: #999;
+  font-weight: bold
+}
+
+pre .deletion {
+  background: #fdd
+}
+
+pre .addition {
+  background: #dfd
+}
+
+pre .diff .change {
+  background: #0086b3
+}
+
+pre .chunk {
+  color: #aaa
+}
+
+pre .tex .formula {
+  opacity: 0.5;
+}
