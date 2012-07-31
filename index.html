@@ -91,9 +91,9 @@
   <span class="keyword">if</span> (<span class="keyword">typeof</span> callback === <span class="string">'function'</span>) {
     callback({ html: html, style: style });
   } <span class="keyword">else</span> {
-    exec(<span class="string">'mkdir -p docs'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
-      fs.writeFile(<span class="string">'docs/doxer.html'</span>, html);
-      fs.writeFile(<span class="string">'docs/doxer.css'</span>, style);
+    exec(<span class="string">'mkdir -p '</span> + options.dir, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      fs.writeFile(options.dir + <span class="string">'/doxer.html'</span>, html);
+      fs.writeFile(options.dir + <span class="string">'/doxer.css'</span>, style);
     });
   }
 }</pre>
