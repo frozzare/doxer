@@ -41,3 +41,5 @@ doxer.process({ files: [], title: 'Title' }, function (res) {
   // res.style is Doxer stylesheet
 });
 ```
+
+`files` can be a string containg source code, path to filename or array with files.
