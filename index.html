@@ -33,11 +33,12 @@
  */</code></pre>
               </td>
               <td class="code">
-                <pre><span class="keyword">var</span> fs = <span class="keyword">require</span>(<span class="string">'fs'</span>)
-  , dox = <span class="keyword">require</span>(<span class="string">'dox'</span>)
-  , ejs = <span class="keyword">require</span>(<span class="string">'ejs'</span>)
-  , exec = <span class="keyword">require</span>(<span class="string">'child_process'</span>).exec
-  , hl = <span class="keyword">require</span>(<span class="string">'highlight'</span>).Highlight;</pre>
+                <pre><span class="keyword">var</span> fs = require(<span class="string">'fs'</span>)
+  , dox = require(<span class="string">'dox'</span>)
+  , ejs = require(<span class="string">'ejs'</span>)
+  , exec = require(<span class="string">'child_process'</span>).exec
+  , utils = require(<span class="string">'./utils'</span>)
+  , coffee = <span class="literal">false</span>;</pre>
               </td>
             </tr>
           
@@ -49,7 +50,7 @@
                 <p>Doxer version.</p>
               </td>
               <td class="code">
-                <pre>exports.version = '0.1.3';</pre>
+                <pre>exports.version = <span class="string">'0.1.4'</span>;</pre>
               </td>
             </tr>
           
@@ -61,18 +62,20 @@
                 <p>Process all files</p>
               </td>
               <td class="code">
-                <pre>exports.process = <span class="keyword">function</span> (options, callback) {
+                <pre>exports.process = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
   <span class="keyword">var</span> template = fs.readFileSync(__dirname + <span class="string">'/../resources/doxer.ejs'</span>, <span class="string">'utf8'</span>).toString()
     , style = fs.readFileSync(__dirname + <span class="string">'/../resources/doxer.css'</span>, <span class="string">'utf8'</span>).toString()
     , html
     , sections = [];
 
-  <span class="keyword">if</span> (typeof options.files === <span class="string">'string'</span>) {
+  <span class="keyword">if</span> (<span class="keyword">typeof</span> options.files === <span class="string">'string'</span>) {
     options.files = [options.files];
   }
 
-  options.files.sort().<span class="keyword">forEach</span>(<span class="keyword">function</span> (file) {
+  options.files.sort().forEach(<span class="function"><span class="keyword">function</span> <span class="params">(file)</span> {</span>
     <span class="keyword">if</span> (file.indexOf(<span class="string">'.js'</span>) !== -<span class="number">1</span> || file.indexOf(<span class="string">'.coffee'</span>) !== -<span class="number">1</span>) {
+      <span class="keyword">if</span> (file.indexOf(<span class="string">'.coffee'</span>) !== -<span class="number">1</span>) coffee = <span class="literal">true</span>;
+      
       file = fs.readFileSync(file, <span class="string">'utf8'</span>).toString();
     }
     
@@ -85,10 +88,10 @@
     sections: sections
   });
   
-  <span class="keyword">if</span> (typeof callback === <span class="string">'function'</span>) {
+  <span class="keyword">if</span> (<span class="keyword">typeof</span> callback === <span class="string">'function'</span>) {
     callback({ html: html, style: style });
   } <span class="keyword">else</span> {
-    exec(<span class="string">'mkdir -p docs'</span>, <span class="keyword">function</span> () {
+    exec(<span class="string">'mkdir -p docs'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
       fs.writeFile(<span class="string">'docs/doxer.html'</span>, html);
       fs.writeFile(<span class="string">'docs/doxer.css'</span>, style);
     });
@@ -102,76 +105,33 @@
                 <div class="pilwrap">
                   <a class="pilcrow" href="#section-4">&#182;</a>
                 </div>
-                <p>Escape given <code>html</code></p>
-              </td>
-              <td class="code">
-                <pre><span class="keyword">function</span> escape (html) {
-  <span class="keyword">return</span> String(html)
-    .replace(/&amp;(?!\w+;)/g, <span class="string">'&amp;amp;'</span>)
-    .replace(/&lt;/g, <span class="string">'&amp;lt;'</span>)
-    .replace(/>/g, <span class="string">'&amp;gt;'</span>);
-}</pre>
-              </td>
-            </tr>
-          
-            <tr id="section-5">
-              <td class="docs">
-                <div class="pilwrap">
-                  <a class="pilcrow" href="#section-5">&#182;</a>
-                </div>
-                <p>Replace <code>###*</code> and <code>###</code> with Dox syntax instead. (Experimental)</p>
-              </td>
-              <td class="code">
-                <pre><span class="keyword">function</span> toDox (source) {
-  <span class="keyword">var</span> lines = source.split(<span class="string">'\n'</span>)
-    , i
-    , coffeeComment = /^\s*\<span class="comment">#\#\#/;</span>
-        
-  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; lines.length; i++) {
-    <span class="keyword">if</span> (coffeeComment.test(lines[i])) {
-      <span class="keyword">if</span> (/\<span class="comment">#\*/.test(lines[i])) {</span>
-        lines[i] = <span class="string">'/'</span> + lines[i].replace(coffeeComment, <span class="string">'*'</span>);
-      } <span class="keyword">else</span> {
-        lines[i] = lines[i].replace(coffeeComment, <span class="string">'*/'</span>);
-      }
-    }
-  }
-
-  <span class="keyword">return</span> lines.join(<span class="string">'\n'</span>);
-}</pre>
-              </td>
-            </tr>
-          
-            <tr id="section-6">
-              <td class="docs">
-                <div class="pilwrap">
-                  <a class="pilcrow" href="#section-6">&#182;</a>
-                </div>
                 <p>Extract top comments from source</p>
               </td>
               <td class="code">
-                <pre><span class="keyword">function</span> extractTopComment (source) {
-  <span class="keyword">var</span> topComment = /(\/\*\!(.|\n)+?\*\/)/.exec(source)
+                <pre><span class="function"><span class="keyword">function</span> <span class="title">extractTopComment</span> <span class="params">(source)</span> {</span>
+  <span class="keyword">var</span> topComment = <span class="regexp">/(\/\*\!(.|\n)+?\*\/)/</span>.exec(source)
+    , lineComment = <span class="regexp">/\/\/.*$/m</span>
     , comment = <span class="string">''</span>
     , result = {};
   
-  <span class="keyword">if</span> (topComment !== <span class="keyword">null</span> &amp;&amp; topComment[<span class="number">1</span>]) {
-    comment = escape(topComment[<span class="number">1</span>]);
+  <span class="keyword">if</span> (topComment !== <span class="literal">null</span> &amp;&amp; topComment[<span class="number">1</span>]) {
+    comment = utils.escape(topComment[<span class="number">1</span>]);
     topComment = topComment[<span class="number">1</span>];
   } <span class="keyword">else</span> {
     <span class="keyword">var</span> lines = source.split(<span class="string">'\n'</span>);
     topComment = <span class="string">''</span>;
+    
     <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; lines.length; i++) {
-      <span class="keyword">if</span> (/\/\/.*$/m.test(lines[i])) {
+      <span class="keyword">if</span> (lineComment.test(lines[i])) {
         topComment += lines[i] + <span class="string">'\n'</span>;
       } <span class="keyword">else</span> {
-        <span class="comment">// Maybe it's a new line between project name comment and copyright comment</span>
-        <span class="keyword">if</span> (/\/\/.*$/m.test(lines[i + <span class="number">1</span>])) <span class="keyword">continue</span>;
+        <span class="comment">// Let's check for a comment on the next line, maybe it's a empty new line between.</span>
+        <span class="keyword">if</span> (lineComment.test(lines[i + <span class="number">1</span>])) <span class="keyword">continue</span>;
         <span class="keyword">break</span>;
       }
     }
     
-    comment = escape(topComment);
+    comment = utils.escape(topComment);
   }
   
   <span class="keyword">if</span> (topComment &amp;&amp; comment) {
@@ -186,39 +146,39 @@
               </td>
             </tr>
           
-            <tr id="section-7">
+            <tr id="section-5">
               <td class="docs">
                 <div class="pilwrap">
-                  <a class="pilcrow" href="#section-7">&#182;</a>
+                  <a class="pilcrow" href="#section-5">&#182;</a>
                 </div>
                 <p>Generate documentation html and code html for <code>source</code></p>
               </td>
               <td class="code">
-                <pre><span class="keyword">function</span> generate (sections, source) {
+                <pre><span class="function"><span class="keyword">function</span> <span class="title">generate</span> <span class="params">(sections, source)</span> {</span>
   <span class="keyword">var</span> parsed
     , topComment;
     
   sections = sections || [];
   
-  <span class="comment">// Replacing ### with Dox syntax instead no compiling of CoffeeScript.</span>
-  source = toDox(source);
+  <span class="comment">// Replacing CoffeeScript ###*/### with Dox syntax</span>
+  source = utils.toDox(source);
   
   <span class="comment">// Parsing Dox comments</span>
-  parsed = dox.parseComments(source, { raw: <span class="keyword">false</span> });
+  parsed = dox.parseComments(source, { raw: <span class="literal">false</span> });
   
   <span class="comment">// Extract top comment</span>
   comment = extractTopComment(source);
   
-  <span class="keyword">if</span> (comment.docs_html !== undefined) {
+  <span class="keyword">if</span> (comment.docs_html !== <span class="literal">undefined</span>) {
     sections.push(comment);
   }
         
-  parsed.<span class="keyword">forEach</span>(<span class="keyword">function</span> (doc) {
+  parsed.forEach(<span class="function"><span class="keyword">function</span> <span class="params">(doc)</span> {</span>
     <span class="keyword">if</span> (doc.ignore || doc.isPrivate) <span class="keyword">return</span>;
                 
     sections.push({
       docs_html: doc.description.full,
-      code_html: hl(doc.code)
+      code_html: utils.highlight(coffee, doc.code)
     });
   });
   
@@ -227,21 +187,21 @@
               </td>
             </tr>
           
-            <tr id="section-8">
+            <tr id="section-6">
               <td class="docs">
                 <div class="pilwrap">
-                  <a class="pilcrow" href="#section-8">&#182;</a>
+                  <a class="pilcrow" href="#section-6">&#182;</a>
                 </div>
                 <p>Read until dox syntax starts</p>
               </td>
               <td class="code">
-                <pre><span class="keyword">function</span> readUntilDox (src, comment) {
+                <pre><span class="function"><span class="keyword">function</span> <span class="title">readUntilDox</span> <span class="params">(src, comment)</span> {</span>
   <span class="keyword">var</span> res = <span class="string">''</span>
     , lines = src.split(<span class="string">'\n'</span>);
         
   <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; lines.length; i++) {
     <span class="comment">// Regex instead of indexOf fixes so dox don't break here.</span>
-    <span class="keyword">if</span> (/\*\*/.test(lines[i])) {
+    <span class="keyword">if</span> (<span class="regexp">/\*\*/</span>.test(lines[i])) {
       <span class="keyword">break</span>;
     } <span class="keyword">else</span> {
       res += lines[i] + <span class="string">'\n'</span>;
@@ -250,7 +210,7 @@
   
   res = res.replace(comment, <span class="string">''</span>);
 
-  <span class="keyword">return</span> hl(res.trim());
+  <span class="keyword">return</span> utils.highlight(coffee, res.trim());
 }</pre>
               </td>
             </tr>

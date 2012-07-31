@@ -132,7 +132,8 @@ pre .css .rule .keyword,
 pre .winutils,
 pre .javascript .title,
 pre .lisp .title,
-pre .subst {
+pre .subst,
+pre .literal {
   color: #000;
   font-weight: bold
 }
@@ -149,7 +150,6 @@ pre .tex .formula {
   color: #d14
 }
 
-pre .title,
 pre .id {
   color: #900;
   font-weight: bold

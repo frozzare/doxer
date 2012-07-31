@@ -8,13 +8,14 @@ var fs = require('fs')
   , dox = require('dox')
   , ejs = require('ejs')
   , exec = require('child_process').exec
-  , hl = require('highlight').Highlight;
+  , utils = require('./utils')
+  , coffee = false;
   
 /**
  * Doxer version.
  */
 
-exports.version = '0.1.3';
+exports.version = '0.1.4';
 
 /**
  * Process all files
@@ -34,6 +35,8 @@ exports.process = function (options, callback) {
 
   options.files.sort().forEach(function (file) {
     if (file.indexOf('.js') !== -1 || file.indexOf('.coffee') !== -1) {
+      if (file.indexOf('.coffee') !== -1) coffee = true;
+      
       file = fs.readFileSync(file, 'utf8').toString();
     }
     
@@ -57,73 +60,36 @@ exports.process = function (options, callback) {
 }
 
 /**
- * Escape given `html`
- *
- * @param {String} html
- * @return {String} escaped html
- */
-
-function escape (html) {
-  return String(html)
-    .replace(/&(?!\w+;)/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
-
-/**
- * Replace `###*` and `###` with Dox syntax instead. (Experimental)
- *
- * @param {String} source
- * @param {String} replaced source
- */
-
-function toDox (source) {
-  var lines = source.split('\n')
-    , i
-    , coffeeComment = /^\s*\#\#\#/;
-        
-  for (i = 0; i < lines.length; i++) {
-    if (coffeeComment.test(lines[i])) {
-      if (/\#\*/.test(lines[i])) {
-        lines[i] = '/' + lines[i].replace(coffeeComment, '*');
-      } else {
-        lines[i] = lines[i].replace(coffeeComment, '*/');
-      }
-    }
-  }
-
-  return lines.join('\n');
-}
-
-/**
  * Extract top comments from source
  *
- * @param {String} source code
+ * @param {String} source
  * @param {Object}
  */
 
 function extractTopComment (source) {
   var topComment = /(\/\*\!(.|\n)+?\*\/)/.exec(source)
+    , lineComment = /\/\/.*$/m
     , comment = ''
     , result = {};
   
   if (topComment !== null && topComment[1]) {
-    comment = escape(topComment[1]);
+    comment = utils.escape(topComment[1]);
     topComment = topComment[1];
   } else {
     var lines = source.split('\n');
     topComment = '';
+    
     for (var i = 0; i < lines.length; i++) {
-      if (/\/\/.*$/m.test(lines[i])) {
+      if (lineComment.test(lines[i])) {
         topComment += lines[i] + '\n';
       } else {
-        // Maybe it's a new line between project name comment and copyright comment
-        if (/\/\/.*$/m.test(lines[i + 1])) continue;
+        // Let's check for a comment on the next line, maybe it's a empty new line between.
+        if (lineComment.test(lines[i + 1])) continue;
         break;
       }
     }
     
-    comment = escape(topComment);
+    comment = utils.escape(topComment);
   }
   
   if (topComment && comment) {
@@ -150,8 +116,8 @@ function generate (sections, source) {
     
   sections = sections || [];
   
-  // Replacing ### with Dox syntax instead no compiling of CoffeeScript.
-  source = toDox(source);
+  // Replacing CoffeeScript ###*/### with Dox syntax
+  source = utils.toDox(source);
   
   // Parsing Dox comments
   parsed = dox.parseComments(source, { raw: false });
@@ -168,12 +134,13 @@ function generate (sections, source) {
                 
     sections.push({
       docs_html: doc.description.full,
-      code_html: hl(doc.code)
+      code_html: utils.highlight(coffee, doc.code)
     });
   });
   
   return sections;
 }
+
 
 /**
  * Read until dox syntax starts
@@ -198,5 +165,5 @@ function readUntilDox (src, comment) {
   
   res = res.replace(comment, '');
 
-  return hl(res.trim());
+  return utils.highlight(coffee, res.trim());
 }
