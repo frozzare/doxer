@@ -50,7 +50,7 @@
                 <p>Doxer version.</p>
               </td>
               <td class="code">
-                <pre>exports.version = <span class="string">'0.1.4'</span>;</pre>
+                <pre>exports.version = <span class="string">'0.1.5'</span>;</pre>
               </td>
             </tr>
           
@@ -65,38 +65,69 @@
                 <pre>exports.process = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
   <span class="keyword">var</span> template = fs.readFileSync(__dirname + <span class="string">'/../resources/doxer.ejs'</span>, <span class="string">'utf8'</span>).toString()
     , style = fs.readFileSync(__dirname + <span class="string">'/../resources/doxer.css'</span>, <span class="string">'utf8'</span>).toString()
-    , html
-    , sections = [];
+    , fn = <span class="keyword">typeof</span> callback === <span class="string">'function'</span>
+    , sections = {};
 
   <span class="keyword">if</span> (<span class="keyword">typeof</span> options.files === <span class="string">'string'</span>) {
     options.files = [options.files];
   }
 
   options.files.sort().forEach(<span class="function"><span class="keyword">function</span> <span class="params">(file)</span> {</span>
-    <span class="keyword">if</span> (file.indexOf(<span class="string">'.js'</span>) !== -<span class="number">1</span> || file.indexOf(<span class="string">'.coffee'</span>) !== -<span class="number">1</span>) {
-      <span class="keyword">if</span> (file.indexOf(<span class="string">'.coffee'</span>) !== -<span class="number">1</span>) coffee = <span class="literal">true</span>;
+    <span class="keyword">var</span> source = file
+      , fileName
+      , html
+      , generated;
+    
+    <span class="keyword">if</span> (<span class="regexp">/.js$/</span>.test(file) || <span class="regexp">/.coffee$/</span>.test(file)) {
+      <span class="keyword">if</span> (<span class="regexp">/.coffee$/</span>.test(file)) coffee = <span class="literal">true</span>;
       
-      file = fs.readFileSync(file, <span class="string">'utf8'</span>).toString();
+      source = fs.readFileSync(file, <span class="string">'utf8'</span>).toString();
+      fileName = file.split(<span class="string">'/'</span>).pop();
+    } <span class="keyword">else</span> {
+      <span class="comment">// Use Doxer as a default title</span>
+      fileName = <span class="string">'Doxer'</span>;
     }
     
-    sections = generate(sections, file);
-  });
-  
-  <span class="comment">// Render template with sections and title </span>
-  html = ejs.render(template, {
-    title: options.title,
-    sections: sections
-  });
-  
-  <span class="keyword">if</span> (<span class="keyword">typeof</span> callback === <span class="string">'function'</span>) {
-    callback({ html: html, style: style });
-  } <span class="keyword">else</span> {
-    exec(<span class="string">'mkdir -p '</span> + options.dir, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
-      fs.writeFile(options.dir + <span class="string">'/doxer.html'</span>, html);
-      fs.writeFile(options.dir + <span class="string">'/doxer.css'</span>, style);
+    generated = generate(source);
+        
+    html = ejs.render(template, {
+      title: options.title || fileName,
+      sections: generated
     });
+  
+    
+    <span class="keyword">if</span> (!fn) { 
+      fileName = fileName.replace(<span class="regexp">/js|coffee/</span>, <span class="string">'html'</span>);
+
+      console.log(<span class="string">'doxer: %s -> %s/%s'</span>, file, options.dir, fileName);
+      
+      exec(<span class="string">'mkdir -p '</span> + options.dir, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        fs.writeFile(options.dir + <span class="string">'/'</span> + fileName, html);
+        fs.writeFile(options.dir + <span class="string">'/doxer.css'</span>, style);
+      });      
+    } <span class="keyword">else</span> {
+      <span class="keyword">if</span> (options.files.length === <span class="number">1</span>) {
+        sections = html; 
+      } <span class="keyword">else</span> {
+        <span class="keyword">if</span> (sections[fileName] !== <span class="literal">undefined</span>) {
+          sections[file] = html;
+        } <span class="keyword">else</span> {
+          sections[fileName] = html;
+        }
+      }
+    }
+  });
+  
+  <span class="keyword">if</span> (fn) {
+    <span class="keyword">var</span> res = { style: style };
+    <span class="keyword">if</span> (<span class="keyword">typeof</span> sections === <span class="string">'string'</span>) {
+      res.html = sections;
+    } <span class="keyword">else</span> {
+      res.files = sections;
+    }
+    callback(res);
   }
-}</pre>
+};</pre>
               </td>
             </tr>
           
@@ -154,9 +185,10 @@
                 <p>Generate documentation html and code html for <code>source</code></p>
               </td>
               <td class="code">
-                <pre><span class="function"><span class="keyword">function</span> <span class="title">generate</span> <span class="params">(sections, source)</span> {</span>
+                <pre><span class="function"><span class="keyword">function</span> <span class="title">generate</span> <span class="params">(source)</span> {</span>
   <span class="keyword">var</span> parsed
-    , topComment;
+    , topComment
+    , sections = [];
     
   sections = sections || [];
   
