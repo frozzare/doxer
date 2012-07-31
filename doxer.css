@@ -49,8 +49,8 @@ td.docs, th.docs {
   background: none;
 }
 .docs p tt, .docs p code {
-  background: #f8f8ff;
-  border: 1px solid #dedede;
+  background: #F8F8F8;
+  border: 1px solid #DFDFDF;
   font-size: 12px;
   padding: 0 0.2em;
 }
@@ -93,6 +93,20 @@ pre, tt, code, .docs pre code {
   margin: 0; 
   padding: 0;
 }
+
+.docs pre code { 
+  background:#F8F8F8; 
+  border: 1px #EAEaEA solid; 
+  padding: 15px; 
+  overflow:scroll; 
+}
+
+.docs pre code.top { 
+  background: none; 
+  border: 0px; 
+  padding: 0px; 
+}
+
 /*
 
 github.com style (c) Vasily Polovnyov <vast@whiteants.net>

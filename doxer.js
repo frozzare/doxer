@@ -15,13 +15,19 @@ var fs = require('fs')
   , html;
 
 /**
+ * Doxer version.
+ */
+
+exports.version = '0.1.3';
+
+/**
  * Process all files
  *
  * @param {Object} options
  */
 
 exports.process = function (options, callback) {
-  options.files.forEach(generate);
+  options.files.sort().forEach(generate);
   
   html = ejs.render(template, {
     title: options.title,
@@ -38,6 +44,20 @@ exports.process = function (options, callback) {
   }
 }
 
+/**
+ * Escape given `html`
+ *
+ * @param {String} html
+ * @return {String} escaped html
+ */
+
+function escape (html) {
+  return String(html)
+    .replace(/&(?!\w+;)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 /** 
  * Generate documentation html and code html for file
  *
@@ -47,13 +67,12 @@ exports.process = function (options, callback) {
 function generate (file) {
   var fileSrc = fs.readFileSync(file, 'utf8').toString()
     , parsed = dox.parseComments(fileSrc, { raw: false })
-    , topComment = /(\/\*\!(.|\n)+?\*\/)/.exec(fileSrc);
+    , topComment = /(\/\*\!(.|\n)+?\*\/)/.exec(fileSrc)
+    , comment = '';
     
   if (topComment !== null && topComment[1]) {
-    sections.push({
-      docs_html: '<pre><code>' + topComment[1] + '</code></pre>',
-      code_html: readUntilDox(fileSrc, topComment[1])
-    });
+    comment = escape(topComment[1]);
+    topComment = topComment[1];
   } else {
     var lines = fileSrc.split('\n');
     topComment = '';
@@ -67,15 +86,19 @@ function generate (file) {
       }
     }
     
+    comment = escape(topComment);
+  }
+  
+  if (topComment && comment) {
     sections.push({
-      docs_html: '<pre><code>' + topComment + '</code></pre>',
+      docs_html: '<pre><code class="top">' + comment + '</code></pre>',
       code_html: readUntilDox(fileSrc, topComment)
     });
   }
       
   parsed.map(function (doc) {
     if (doc.ignore || doc.isPrivate) return;
-        
+                
     sections.push({
       docs_html: doc.description.full,
       code_html: hl(doc.code)
@@ -105,6 +128,6 @@ function readUntilDox (src, topComment) {
   }
   
   res = res.replace(topComment, '');
-  
+
   return hl(res.trim());
 }

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Doxer</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" media="all" href="doxer.css">
+  </head>
+  <body>
+    <div id="container">
+      <table cellpadding="0" cellspacing="0">
+        <thead>
+          <tr>
+            <th class="docs">
+              <h1>
+                Doxer
+              </h1>
+            </th>
+            <th class="code">
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr id="section-1">
+              <td class="docs">
+                <div class="pilwrap">
+                  <a class="pilcrow" href="#section-1">&#182;</a>
+                </div>
+                <pre><code class="top">/*!
+ * Doxer
+ * Copyright(c) 2012 Fredrik Forsmo &lt;fredrik.forsmo@gmail.com&gt;
+ * MIT Licensed
+ */</code></pre>
+              </td>
+              <td class="code">
+                <pre><span class="keyword">var</span> fs = <span class="keyword">require</span>(<span class="string">'fs'</span>)
+  , dox = <span class="keyword">require</span>(<span class="string">'dox'</span>)
+  , ejs = <span class="keyword">require</span>(<span class="string">'ejs'</span>)
+  , exec = <span class="keyword">require</span>(<span class="string">'child_process'</span>).exec
+  , hl = <span class="keyword">require</span>(<span class="string">'highlight'</span>).Highlight
+  , template = fs.readFileSync(__dirname + <span class="string">'/../resources/doxer.ejs'</span>, <span class="string">'utf8'</span>).toString()
+  , style = fs.readFileSync(__dirname + <span class="string">'/../resources/doxer.css'</span>, <span class="string">'utf8'</span>).toString()
+  , sections = []
+  , html;</pre>
+              </td>
+            </tr>
+          
+            <tr id="section-2">
+              <td class="docs">
+                <div class="pilwrap">
+                  <a class="pilcrow" href="#section-2">&#182;</a>
+                </div>
+                <p>Doxer version.</p>
+              </td>
+              <td class="code">
+                <pre>exports.version = '0.1.3';</pre>
+              </td>
+            </tr>
+          
+            <tr id="section-3">
+              <td class="docs">
+                <div class="pilwrap">
+                  <a class="pilcrow" href="#section-3">&#182;</a>
+                </div>
+                <p>Process all files</p>
+              </td>
+              <td class="code">
+                <pre>exports.process = <span class="keyword">function</span> (options, callback) {
+  options.files.sort().<span class="keyword">forEach</span>(generate);
+  
+  html = ejs.render(template, {
+    title: options.title,
+    sections: sections
+  });
+  
+  <span class="keyword">if</span> (typeof callback === <span class="string">'function'</span>) {
+    callback({ html: html, style: style });
+  } <span class="keyword">else</span> {
+    exec(<span class="string">'mkdir -p docs'</span>, <span class="keyword">function</span> () {
+      fs.writeFile(<span class="string">'docs/doxer.html'</span>, html);
+      fs.writeFile(<span class="string">'docs/doxer.css'</span>, style);
+    });
+  }
+}</pre>
+              </td>
+            </tr>
+          
+            <tr id="section-4">
+              <td class="docs">
+                <div class="pilwrap">
+                  <a class="pilcrow" href="#section-4">&#182;</a>
+                </div>
+                <p>Escape given <code>html</code></p>
+              </td>
+              <td class="code">
+                <pre><span class="keyword">function</span> escape (html) {
+  <span class="keyword">return</span> String(html)
+    .replace(/&amp;(?!\w+;)/g, <span class="string">'&amp;amp;'</span>)
+    .replace(/&lt;/g, <span class="string">'&amp;lt;'</span>)
+    .replace(/>/g, <span class="string">'&amp;gt;'</span>);
+}</pre>
+              </td>
+            </tr>
+          
+            <tr id="section-5">
+              <td class="docs">
+                <div class="pilwrap">
+                  <a class="pilcrow" href="#section-5">&#182;</a>
+                </div>
+                <p>Generate documentation html and code html for file</p>
+              </td>
+              <td class="code">
+                <pre><span class="keyword">function</span> generate (file) {
+  <span class="keyword">var</span> fileSrc = fs.readFileSync(file, <span class="string">'utf8'</span>).toString()
+    , parsed = dox.parseComments(fileSrc, { raw: <span class="keyword">false</span> })
+    , topComment = /(\/\*\!(.|\n)+?\*\/)/.exec(fileSrc)
+    , comment = <span class="string">''</span>;
+    
+  <span class="keyword">if</span> (topComment !== <span class="keyword">null</span> &amp;&amp; topComment[<span class="number">1</span>]) {
+    comment = escape(topComment[<span class="number">1</span>]);
+    topComment = topComment[<span class="number">1</span>];
+  } <span class="keyword">else</span> {
+    <span class="keyword">var</span> lines = fileSrc.split(<span class="string">'\n'</span>);
+    topComment = <span class="string">''</span>;
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; lines.length; i++) {
+      <span class="keyword">if</span> (/\/\/.*$/m.test(lines[i])) {
+        topComment += lines[i] + <span class="string">'\n'</span>;
+      } <span class="keyword">else</span> {
+        <span class="comment">// Maybe it's a new line between project name comment and copyright comment</span>
+        <span class="keyword">if</span> (/\/\/.*$/m.test(lines[i + <span class="number">1</span>])) <span class="keyword">continue</span>;
+        <span class="keyword">break</span>;
+      }
+    }
+    
+    comment = escape(topComment);
+  }
+  
+  <span class="keyword">if</span> (topComment &amp;&amp; comment) {
+    sections.push({
+      docs_html: <span class="string">'&lt;pre>&lt;code class="top">'</span> + comment + <span class="string">'&lt;/code>&lt;/pre>'</span>,
+      code_html: readUntilDox(fileSrc, topComment)
+    });
+  }
+      
+  parsed.map(<span class="keyword">function</span> (doc) {
+    <span class="keyword">if</span> (doc.ignore || doc.isPrivate) <span class="keyword">return</span>;
+                
+    sections.push({
+      docs_html: doc.description.full,
+      code_html: hl(doc.code)
+    });
+  });
+}</pre>
+              </td>
+            </tr>
+          
+            <tr id="section-6">
+              <td class="docs">
+                <div class="pilwrap">
+                  <a class="pilcrow" href="#section-6">&#182;</a>
+                </div>
+                <p>Read until dox syntax starts</p>
+              </td>
+              <td class="code">
+                <pre><span class="keyword">function</span> readUntilDox (src, topComment) {
+  <span class="keyword">var</span> res = <span class="string">''</span>
+    , lines = src.split(<span class="string">'\n'</span>);
+        
+  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; lines.length; i++) {
+    <span class="comment">// Regex instead of indexOf fixes so dox don't break here.</span>
+    <span class="keyword">if</span> (/\*\*/.test(lines[i])) {
+      <span class="keyword">break</span>;
+    } <span class="keyword">else</span> {
+      res += lines[i] + <span class="string">'\n'</span>;
+    }
+  }
+  
+  res = res.replace(topComment, <span class="string">''</span>);
+
+  <span class="keyword">return</span> hl(res.trim());
+}</pre>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  <body>
+</html>
