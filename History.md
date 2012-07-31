@@ -1,3 +1,9 @@
+0.1.4
+==================
+
+  * Fixing missing dependencies
+  * NPM bumped version
+
 0.1.3
 ==================
 
