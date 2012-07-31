@@ -1,6 +1,7 @@
 {
   "name": "doxer",
   "version": "0.1.5",
+  "preferGlobal": "true",
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "description": "Doxer is port of Docco for Dox documentation",
   "contributors": [],

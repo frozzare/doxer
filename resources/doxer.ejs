@@ -6,7 +6,23 @@
     <link rel="stylesheet" media="all" href="doxer.css">
   </head>
   <body>
+    <div id="background"></div>
     <div id="container">
+      <% if (sources.length > 1) { %>
+        <div id="jump_to">
+          Jump To &hellip;
+          <div id="jump_wrapper">
+            <div id="jump_page">
+              <% for (var i = 0; i < sources.length; i++) { %>
+                <% var source = sources[i]; %>
+                <a class="source" href="<%= source.destination %>">
+                  <%= source.fileName %>
+                </a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% } %>
       <table cellpadding="0" cellspacing="0">
         <thead>
           <tr>
