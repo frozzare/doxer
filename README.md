@@ -33,10 +33,9 @@ Options:
 ### Usage example
 
 ```sh
-$ doxer -t "project name" source.js
+$ doxer lib/*
 ```
-
-Will save `filename.html` and `doxer.css` in `docs` directory after generating the documentation.
+Will only take `.js` and `.coffee` files, other will not be touched. After generating the documentation it will save `doxer.css` in output directory and a html for each JavaScript or CoffeeScript files.
 
 ## Supported top comments
 
