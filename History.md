@@ -2,6 +2,7 @@
 ==================
 
   * Fixing missing dependencies
+  * Adding `-d` option
   * NPM bumped version
 
 0.1.3

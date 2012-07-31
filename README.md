@@ -22,7 +22,7 @@ Options:
 
   -h, --help             output usage information
   -V, --version          output the version number
-  -t, --title [title]    doxer title
+  -t, --title [title]    doxer title, default Doxer
   -d, --dir [directory]  output directory
 
 ```
