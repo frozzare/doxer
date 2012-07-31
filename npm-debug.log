@@ -1,0 +1,92 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@1.1.32
+3 info using node@v0.8.4
+4 verbose config file /Users/Fredrik/.npmrc
+5 verbose config file /usr/local/etc/npmrc
+6 verbose config file /usr/local/lib/node_modules/npm/npmrc
+7 verbose publish [ '.' ]
+8 verbose read json /Volumes/Storage/u/me/github/frozzare/doxer/package.json
+9 verbose cache add [ '.', null ]
+10 silly cache add name=undefined spec="." args=[".",null]
+11 verbose parsed url { pathname: '.', path: '.', href: '.' }
+12 verbose read json package.json
+13 verbose tar pack [ '/var/folders/tt/3v0jld751qz3_g8h6mgvk41r0000gn/T/npm-1343751716820/1343751716820-0.9552806802093983/tmp.tgz',
+13 verbose tar pack   '.' ]
+14 verbose tarball /var/folders/tt/3v0jld751qz3_g8h6mgvk41r0000gn/T/npm-1343751716820/1343751716820-0.9552806802093983/tmp.tgz
+15 verbose folder .
+16 info prepublish doxer@0.1.3
+17 verbose tar unpack /var/folders/tt/3v0jld751qz3_g8h6mgvk41r0000gn/T/npm-1343751716820/1343751716820-0.9552806802093983/tmp.tgz
+18 silly gunzTarPerm modes [ '755', '644' ]
+19 silly gunzTarPerm extractEntry package.json
+20 silly gunzTarPerm extractEntry .npmignore
+21 silly gunzTarPerm extractEntry README.md
+22 silly gunzTarPerm extractEntry index.js
+23 silly gunzTarPerm extractEntry bin/doxer
+24 silly gunzTarPerm extractEntry lib/doxer.js
+25 silly gunzTarPerm extractEntry resources/doxer.css
+26 silly gunzTarPerm extractEntry resources/doxer.ejs
+27 verbose read json /var/folders/tt/3v0jld751qz3_g8h6mgvk41r0000gn/T/npm-1343751716820/1343751716820-0.9552806802093983/package/package.json
+28 verbose from cache /var/folders/tt/3v0jld751qz3_g8h6mgvk41r0000gn/T/npm-1343751716820/1343751716820-0.9552806802093983/package/package.json
+29 verbose tar pack [ '/Users/Fredrik/.npm/doxer/0.1.3/package.tgz',
+29 verbose tar pack   '/var/folders/tt/3v0jld751qz3_g8h6mgvk41r0000gn/T/npm-1343751716820/1343751716820-0.9552806802093983/package' ]
+30 verbose tarball /Users/Fredrik/.npm/doxer/0.1.3/package.tgz
+31 verbose folder /var/folders/tt/3v0jld751qz3_g8h6mgvk41r0000gn/T/npm-1343751716820/1343751716820-0.9552806802093983/package
+32 verbose tar unpack /Users/Fredrik/.npm/doxer/0.1.3/package.tgz
+33 silly gunzTarPerm modes [ '755', '644' ]
+34 silly gunzTarPerm extractEntry package.json
+35 silly gunzTarPerm extractEntry .npmignore
+36 silly gunzTarPerm extractEntry README.md
+37 silly gunzTarPerm extractEntry index.js
+38 silly gunzTarPerm extractEntry bin/doxer
+39 silly gunzTarPerm extractEntry lib/doxer.js
+40 silly gunzTarPerm extractEntry resources/doxer.css
+41 silly gunzTarPerm extractEntry resources/doxer.ejs
+42 verbose read json /Users/Fredrik/.npm/doxer/0.1.3/package/package.json
+43 silly shasum updated bytes 4373
+44 info shasum 35658804a36d9500773e0511e4791e52083ff4cc
+44 info shasum /Users/Fredrik/.npm/doxer/0.1.3/package.tgz
+45 verbose from cache /Users/Fredrik/.npm/doxer/0.1.3/package/package.json
+46 verbose chmod /Users/Fredrik/.npm/doxer/0.1.3/package.tgz 644
+47 verbose chown /Users/Fredrik/.npm/doxer/0.1.3/package.tgz [ 501, 20 ]
+48 silly publish { name: 'doxer',
+48 silly publish   version: '0.1.3',
+48 silly publish   author: { name: 'Fredrik Forsmo', email: 'fredrik.forsmo@gmail.com' },
+48 silly publish   description: 'Doxer is port of Docco for Dox documentation',
+48 silly publish   contributors: [],
+48 silly publish   bin: { doxer: './bin/doxer' },
+48 silly publish   main: './lib/doxer',
+48 silly publish   repository: { type: 'git', url: 'https://github.com/frozzare/doxer.git' },
+48 silly publish   keywords: [ 'dox', 'docco', 'documentation' ],
+48 silly publish   dependencies:
+48 silly publish    { ejs: '*',
+48 silly publish      dox: 'git://github.com/visionmedia/dox.git',
+48 silly publish      'highlight.js': '7.0.1',
+48 silly publish      commander: '1.0.0' },
+48 silly publish   license: 'MIT',
+48 silly publish   engine: { node: '>= 0.4.x' },
+48 silly publish   readme: '# Doxer\n\nDoxer is a port of, and borrows a bit from, [Docco](https://github.com/jashkenas/docco) but for [Dox documentation](https://github.com/visionmedia/dox).\nDoxer is not perfect and maybe contains bugs.\n\n[Example page](http://frozzare.github.com/doxer/)\n\n```sh\nnpm install -g doxer\ndoxer --title "project name" source.js\n```\n\nWill save `doxer.html` and `doxer.css` in `docs` directory after generating the documentation.\n\n## Supported top comments\n\n```\n/*!\n * Project comment\n * ...\n * ... \n */\n \n// Project comment\n// ...\n// ...\n\n// Project comment\n\n// ...\n// ...\n```\n\n## Using Doxer inside your code\n\n```javascript\nvar doxer = require(\'doxer\');\n\ndoxer.process({ files: [], title: \'Title\' }, function (res) {\n  // res.html is the html document\n  // res.style is Doxer stylesheet\n});\n```\n\n`files` can be a string containg source code, path to filename or array with files.',
+48 silly publish   _id: 'doxer@0.1.3',
+48 silly publish   dist: { shasum: '35658804a36d9500773e0511e4791e52083ff4cc' } }
+49 verbose url raw doxer
+50 verbose url resolving [ 'https://registry.npmjs.org/', './doxer' ]
+51 verbose url resolved https://registry.npmjs.org/doxer
+52 http PUT https://registry.npmjs.org/doxer
+53 http 409 https://registry.npmjs.org/doxer
+54 verbose url raw doxer
+55 verbose url resolving [ 'https://registry.npmjs.org/', './doxer' ]
+56 verbose url resolved https://registry.npmjs.org/doxer
+57 http GET https://registry.npmjs.org/doxer
+58 http 200 https://registry.npmjs.org/doxer
+59 error publish fail Cannot publish over existing version.
+59 error publish fail Bump the 'version' field, set the --force flag, or
+59 error publish fail     npm unpublish 'doxer@0.1.3'
+59 error publish fail and try again
+60 error System Darwin 12.0.0
+61 error command "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+62 error cwd /Volumes/Storage/u/me/github/frozzare/doxer
+63 error node -v v0.8.4
+64 error npm -v 1.1.32
+65 error code EPUBLISHCONFLICT
+66 error message publish fail
+67 verbose exit [ 1, true ]
