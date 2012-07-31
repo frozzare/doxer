@@ -6,7 +6,7 @@ var program = require('commander')
 program
   .version(doxer.version)
   .usage('[options] <file ...>')
-  .option('-t, --title [title]', 'Doxer title, default is the file name')
+  .option('-t, --title [title]', 'Doxer title')
   .parse(process.argv);
 
 if (program.title && program.args.length > 0) {
