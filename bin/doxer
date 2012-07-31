@@ -7,12 +7,14 @@ program
   .version(doxer.version)
   .usage('[options] <file ...>')
   .option('-t, --title [title]', 'Doxer title')
+  .option('-d, --dir [directory]', 'Output directory')
   .parse(process.argv);
 
 if (program.title && program.args.length > 0) {
   doxer.process({
     title: program.title,
-    files: program.args
+    files: program.args,
+    dir: program.dir || 'docs'
   });  
 } else {
   console.log(program.helpInformation());
