@@ -20,7 +20,7 @@
   "dependencies" : {
     "ejs": "*",
     "dox": "git://github.com/visionmedia/dox.git",
-    "highlight": "0.2.2",
+    "highlight.js": "7.0.1",
     "commander": "1.0.0"
   },
   "license": "MIT",
