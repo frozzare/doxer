@@ -26,9 +26,9 @@
                 <div class="pilwrap">
                   <a class="pilcrow" href="#section-1">&#182;</a>
                 </div>
-                <pre><code>/*!
+                <pre><code class="top">/*!
  * Doxer
- * Copyright(c) 2012 Fredrik Forsmo <fredrik.forsmo@gmail.com>
+ * Copyright(c) 2012 Fredrik Forsmo &lt;fredrik.forsmo@gmail.com&gt;
  * MIT Licensed
  */</code></pre>
               </td>
@@ -50,11 +50,23 @@
                 <div class="pilwrap">
                   <a class="pilcrow" href="#section-2">&#182;</a>
                 </div>
+                <p>Doxer version.</p>
+              </td>
+              <td class="code">
+                <pre>exports.version = '0.1.3';</pre>
+              </td>
+            </tr>
+          
+            <tr id="section-3">
+              <td class="docs">
+                <div class="pilwrap">
+                  <a class="pilcrow" href="#section-3">&#182;</a>
+                </div>
                 <p>Process all files</p>
               </td>
               <td class="code">
                 <pre>exports.process = <span class="keyword">function</span> (options, callback) {
-  options.files.<span class="keyword">forEach</span>(generate);
+  options.files.sort().<span class="keyword">forEach</span>(generate);
   
   html = ejs.render(template, {
     title: options.title,
@@ -73,10 +85,27 @@
               </td>
             </tr>
           
-            <tr id="section-3">
+            <tr id="section-4">
               <td class="docs">
                 <div class="pilwrap">
-                  <a class="pilcrow" href="#section-3">&#182;</a>
+                  <a class="pilcrow" href="#section-4">&#182;</a>
+                </div>
+                <p>Escape given <code>html</code></p>
+              </td>
+              <td class="code">
+                <pre><span class="keyword">function</span> escape (html) {
+  <span class="keyword">return</span> String(html)
+    .replace(/&amp;(?!\w+;)/g, <span class="string">'&amp;amp;'</span>)
+    .replace(/&lt;/g, <span class="string">'&amp;lt;'</span>)
+    .replace(/>/g, <span class="string">'&amp;gt;'</span>);
+}</pre>
+              </td>
+            </tr>
+          
+            <tr id="section-5">
+              <td class="docs">
+                <div class="pilwrap">
+                  <a class="pilcrow" href="#section-5">&#182;</a>
                 </div>
                 <p>Generate documentation html and code html for file</p>
               </td>
@@ -84,13 +113,12 @@
                 <pre><span class="keyword">function</span> generate (file) {
   <span class="keyword">var</span> fileSrc = fs.readFileSync(file, <span class="string">'utf8'</span>).toString()
     , parsed = dox.parseComments(fileSrc, { raw: <span class="keyword">false</span> })
-    , topComment = /(\/\*\!(.|\n)+?\*\/)/.exec(fileSrc);
+    , topComment = /(\/\*\!(.|\n)+?\*\/)/.exec(fileSrc)
+    , comment = <span class="string">''</span>;
     
   <span class="keyword">if</span> (topComment !== <span class="keyword">null</span> &amp;&amp; topComment[<span class="number">1</span>]) {
-    sections.push({
-      docs_html: <span class="string">'&lt;pre>&lt;code>'</span> + topComment[<span class="number">1</span>] + <span class="string">'&lt;/code>&lt;/pre>'</span>,
-      code_html: readUntilDox(fileSrc, topComment[<span class="number">1</span>])
-    });
+    comment = escape(topComment[<span class="number">1</span>]);
+    topComment = topComment[<span class="number">1</span>];
   } <span class="keyword">else</span> {
     <span class="keyword">var</span> lines = fileSrc.split(<span class="string">'\n'</span>);
     topComment = <span class="string">''</span>;
@@ -104,15 +132,19 @@
       }
     }
     
+    comment = escape(topComment);
+  }
+  
+  <span class="keyword">if</span> (topComment &amp;&amp; comment) {
     sections.push({
-      docs_html: <span class="string">'&lt;pre>&lt;code>'</span> + topComment + <span class="string">'&lt;/code>&lt;/pre>'</span>,
+      docs_html: <span class="string">'&lt;pre>&lt;code class="top">'</span> + comment + <span class="string">'&lt;/code>&lt;/pre>'</span>,
       code_html: readUntilDox(fileSrc, topComment)
     });
   }
       
   parsed.map(<span class="keyword">function</span> (doc) {
     <span class="keyword">if</span> (doc.ignore || doc.isPrivate) <span class="keyword">return</span>;
-        
+                
     sections.push({
       docs_html: doc.description.full,
       code_html: hl(doc.code)
@@ -122,10 +154,10 @@
               </td>
             </tr>
           
-            <tr id="section-4">
+            <tr id="section-6">
               <td class="docs">
                 <div class="pilwrap">
-                  <a class="pilcrow" href="#section-4">&#182;</a>
+                  <a class="pilcrow" href="#section-6">&#182;</a>
                 </div>
                 <p>Read until dox syntax starts</p>
               </td>
@@ -144,7 +176,7 @@
   }
   
   res = res.replace(topComment, <span class="string">''</span>);
-  
+
   <span class="keyword">return</span> hl(res.trim());
 }</pre>
               </td>
