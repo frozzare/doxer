@@ -2,6 +2,7 @@
 ==================
 
   * Adding support for multiple files
+  * Removing Doxer callback option
   * Now the file name is used as the name on the html instead of `doxer.html`
 
 0.1.4
