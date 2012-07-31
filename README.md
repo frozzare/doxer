@@ -5,9 +5,32 @@ Doxer is not perfect and maybe contains bugs.
 
 [Example page](http://frozzare.github.com/doxer/)
 
+## Installation
+
+Install from npm:
+
+```
+$ npm install -g doxer
+```
+
+## Usage
+
+```
+Usage: doxer [options] <file ...>
+
+Options:
+
+  -h, --help             output usage information
+  -V, --version          output the version number
+  -t, --title [title]    doxer title
+  -d, --dir [directory]  output directory
+
+```
+
+### Usage example
+
 ```sh
-npm install -g doxer
-doxer --title "project name" source.js
+$ doxer -t "project name" source.js
 ```
 
 Will save `doxer.html` and `doxer.css` in `docs` directory after generating the documentation.
