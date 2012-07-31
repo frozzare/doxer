@@ -1,3 +1,10 @@
+0.1.5
+==================
+
+  * Adding support for multiple files
+  * When using doxer as a node module the callback will get `files` as a property if the files array contains more then one path to file.
+  * Now the file name is used as the name on the html instead of `doxer.html`
+
 0.1.4
 ==================
 
