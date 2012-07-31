@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>utils.js</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" media="all" href="doxer.css">
+  </head>
+  <body>
+    <div id="background"></div>
+    <div id="container">
+      
+        <div id="jump_to">
+          Jump To &hellip;
+          <div id="jump_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="doxer.html">
+                  doxer.js
+                </a>
+              
+                
+                <a class="source" href="utils.html">
+                  utils.js
+                </a>
+              
+            </div>
+          </div>
+        </div>
+      
+      <table cellpadding="0" cellspacing="0">
+        <thead>
+          <tr>
+            <th class="docs">
+              <h1>
+                utils.js
+              </h1>
+            </th>
+            <th class="code">
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr id="section-1">
+              <td class="docs">
+                <div class="pilwrap">
+                  <a class="pilcrow" href="#section-1">&#182;</a>
+                </div>
+                <p>Escape given <code>html</code></p>
+              </td>
+              <td class="code">
+                <pre>exports.escape = <span class="function"><span class="keyword">function</span> <span class="params">(html)</span> {</span>
+  <span class="keyword">return</span> String(html)
+    .replace(<span class="regexp">/&amp;(?!\w+;)/g</span>, <span class="string">'&amp;amp;'</span>)
+    .replace(<span class="regexp">/&lt;/g</span>, <span class="string">'&amp;lt;'</span>)
+    .replace(<span class="regexp">/>/g</span>, <span class="string">'&amp;gt;'</span>);
+};</pre>
+              </td>
+            </tr>
+          
+            <tr id="section-2">
+              <td class="docs">
+                <div class="pilwrap">
+                  <a class="pilcrow" href="#section-2">&#182;</a>
+                </div>
+                <p>Shortcut function for highlight code</p>
+              </td>
+              <td class="code">
+                <pre>exports.highlight = <span class="function"><span class="keyword">function</span> <span class="params">(coffee, code)</span> {</span>
+  <span class="keyword">return</span> hl.highlight(coffee ? <span class="string">'coffeescript'</span> : <span class="string">'javascript'</span>, code).value;
+};</pre>
+              </td>
+            </tr>
+          
+            <tr id="section-3">
+              <td class="docs">
+                <div class="pilwrap">
+                  <a class="pilcrow" href="#section-3">&#182;</a>
+                </div>
+                <p>Replace <code>###*</code> and <code>###</code> with Dox syntax instead. (Experimental)</p>
+              </td>
+              <td class="code">
+                <pre>exports.toDox = <span class="function"><span class="keyword">function</span> <span class="params">(source)</span> {</span>
+  <span class="keyword">var</span> lines = source.split(<span class="string">'\n'</span>)
+    , coffeeComment = <span class="regexp">/^\s*\#\#\#/</span>;
+
+  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; lines.length; i++) {
+    <span class="keyword">if</span> (coffeeComment.test(lines[i])) {
+      <span class="keyword">if</span> (<span class="regexp">/\#\*/</span>.test(lines[i])) {
+        lines[i] = <span class="string">'/'</span> + lines[i].replace(coffeeComment, <span class="string">'*'</span>);
+      } <span class="keyword">else</span> {
+        lines[i] = lines[i].replace(coffeeComment, <span class="string">'*/\n'</span>);
+      }
+    }
+  }
+
+  <span class="keyword">return</span> lines.join(<span class="string">'\n'</span>);
+};</pre>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  <body>
+</html>
