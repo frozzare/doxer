@@ -14,7 +14,7 @@ if (program.title && program.args.length > 0) {
   doxer.process({
     title: program.title,
     files: program.args,
-    dir: program.dir.replace(/\/$/, '') || 'docs'
+    dir: (program.dir || 'docs').replace(/\/$/, '')
   });  
 } else {
   console.log(program.helpInformation());
