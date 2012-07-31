@@ -56,20 +56,3 @@ Will save `filename.html` and `doxer.css` in `docs` directory after generating t
 // ...
 // ...
 ```
-
-## Using Doxer inside your code
-
-```javascript
-var doxer = require('doxer');
-
-doxer.process({ files: [], title: 'Title' }, function (res) {
-  // res.html is the html document
-  // res.style is Doxer stylesheet
-  
-  // If files contains more then one path to file it will not return `res.html`, instead it will return `res.files`.
-  // res.files['utils.js'] => html for utils.js
-  // res.files['doxer.js'] => html for doxer.js 
-});
-```
-
-`files` can be a string containg source code, path to filename or array with files.
