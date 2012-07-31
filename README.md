@@ -33,7 +33,7 @@ Options:
 $ doxer -t "project name" source.js
 ```
 
-Will save `doxer.html` and `doxer.css` in `docs` directory after generating the documentation.
+Will save `filename.html` and `doxer.css` in `docs` directory after generating the documentation.
 
 ## Supported top comments
 
@@ -62,6 +62,10 @@ var doxer = require('doxer');
 doxer.process({ files: [], title: 'Title' }, function (res) {
   // res.html is the html document
   // res.style is Doxer stylesheet
+  
+  // If files contains more then one path to file it will not return `res.html`, instead it will return `res.files`.
+  // res.files['utils.js'] => html for utils.js
+  // res.files['doxer.js'] => html for doxer.js 
 });
 ```
 

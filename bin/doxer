@@ -6,11 +6,11 @@ var program = require('commander')
 program
   .version(doxer.version)
   .usage('[options] <file ...>')
-  .option('-t, --title [title]', 'doxer title, default Doxer')
+  .option('-t, --title [title]', 'doxer title, default file name')
   .option('-d, --dir [directory]', 'output directory')
   .parse(process.argv);
 
-program.title = program.title || 'Doxer';
+program.title = program.title;
 
 if (program.args.length) {
   doxer.process({
