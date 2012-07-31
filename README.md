@@ -1,8 +1,10 @@
 # Doxer
 
-Doxer is a port of, and borrows from, [Docco](https://github.com/jashkenas/docco) but for [Dox documentation](https://github.com/visionmedia/dox). Doxer is not perfect and maybe contains bugs.
+Doxer is a port of, and borrows heavily from, [Docco](https://github.com/jashkenas/docco) but for [Dox documentation](https://github.com/visionmedia/dox). Doxer is not perfect and maybe contains bugs.
 
-[Docco](https://github.com/jashkenas/docco) is written by
+[Docco](https://github.com/jashkenas/docco) -- the original
+quick-and-dirty, hundred-line-long,literate-programming-style
+documentation generator in CoffeeScript.
 
 [Example page](http://frozzare.github.com/doxer/)
 
