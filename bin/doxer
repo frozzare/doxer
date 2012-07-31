@@ -10,8 +10,6 @@ program
   .option('-d, --dir [directory]', 'output directory')
   .parse(process.argv);
 
-program.title = program.title;
-
 if (program.args.length) {
   doxer.process({
     title: program.title,
